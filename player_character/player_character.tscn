@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://cr4334u7y26sv"]
+
+[ext_resource type="Script" path="res://player_character/player_character.gd" id="1_tml4c"]
+[ext_resource type="Script" path="res://player_character/multiplayer_synchronizer.gd" id="3_ovx13"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7vwab"]
+albedo_color = Color(0, 0.439216, 0.654902, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_idb1s"]
+material = SubResource("StandardMaterial3D_7vwab")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4m00y"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_pcmc8"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/0/watch = false
+properties/1/path = NodePath(".:y_rotation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/1/watch = false
+properties/2/path = NodePath(".:visible")
+properties/2/spawn = true
+properties/2/sync = true
+properties/2/watch = false
+
+[node name="PlayerCharacter" type="CharacterBody3D" groups=["player_characters"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_tml4c")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_idb1s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_4m00y")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.959378, 0.282124, 0, -0.282124, 0.959378, 0, 1.68083, 3.94139)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+root_path = NodePath(".")
+replication_config = SubResource("SceneReplicationConfig_pcmc8")
+script = ExtResource("3_ovx13")
